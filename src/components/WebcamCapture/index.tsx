@@ -210,18 +210,18 @@ export function WebcamCapture({ onCapture }: WebcamCaptureProps) {
       
       <div className="space-y-4">
         <div>
-          <label htmlFor="camera-select" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="camera-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Pilih Kamera:
           </label>
           <select
             id="camera-select"
             value={selectedDeviceId}
             onChange={(e) => setSelectedDeviceId(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:text-gray-500 dark:disabled:text-gray-400"
             disabled={!!stream}
           >
             {devices.map((device) => (
-              <option key={device.deviceId} value={device.deviceId}>
+              <option key={device.deviceId} value={device.deviceId} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                 {device.label || `Kamera ${devices.indexOf(device) + 1}`}
               </option>
             ))}

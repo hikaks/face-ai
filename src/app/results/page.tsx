@@ -6,146 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, RotateCcw, Download } from "lucide-react";
 import BasicAnalysisResults from "@/components/BasicAnalysisResults";
-import AdvancedAnalysisResults from "@/components/AdvancedAnalysisResults";
-
-/**
- * Interface for skin analysis results from Face++ API
- */
-interface SkinAnalyzeResult {
-  timestamp?: string;
-  confidence?: number;
-  analysisResults?: {
-    skin?: {
-      health?: number;
-      stain?: number;
-      acne?: number;
-      dark_circle?: number;
-      wrinkle?: number;
-      eye_pouch?: number;
-      forehead_wrinkle?: number;
-      crows_feet?: number;
-      eye_finelines?: number;
-      glabella_wrinkle?: number;
-      nasolabial_fold?: number;
-      pores_forehead?: number;
-      pores_left_cheek?: number;
-      pores_right_cheek?: number;
-      pores_jaw?: number;
-      blackhead?: number;
-      mole?: number;
-      skin_spot?: number;
-      skin_type?: number;
-    };
-    demographics?: {
-      age?: number;
-      gender?: string;
-    };
-    emotion?: {
-      anger?: number;
-      disgust?: number;
-      fear?: number;
-      happiness?: number;
-      neutral?: number;
-      sadness?: number;
-      surprise?: number;
-    };
-    beauty?: {
-      male_score?: number;
-      female_score?: number;
-    };
-  };
-  request_id?: string;
-  time_used?: number;
-  faces?: Array<{
-    face_token?: string;
-    face_rectangle?: {
-      top: number;
-      left: number;
-      width: number;
-      height: number;
-    };
-    attributes?: {
-      gender?: {
-        value: string;
-      };
-      age?: {
-        value: number;
-      };
-      emotion?: {
-        anger?: number;
-        disgust?: number;
-        fear?: number;
-        happiness?: number;
-        neutral?: number;
-        sadness?: number;
-        surprise?: number;
-      };
-      beauty?: {
-        male_score?: number;
-        female_score?: number;
-      };
-      skinstatus?: {
-        health?: number;
-        stain?: number;
-        acne?: number;
-        dark_circle?: number;
-      };
-    };
-  }>;
-  result?: {
-    health?: number;
-    stain?: number;
-    acne?: number;
-    dark_circle?: number;
-    wrinkle?: number;
-  };
-  demographics?: {
-    age?: number;
-    gender?: string;
-  };
-  emotion?: {
-    anger?: number;
-    disgust?: number;
-    fear?: number;
-    happiness?: number;
-    neutral?: number;
-    sadness?: number;
-    surprise?: number;
-  };
-  beauty?: {
-    male_score?: number;
-    female_score?: number;
-  };
-  warning?: string[];
-  quality_tips?: string[];
-  skinAnalysis?: {
-    skin?: {
-      [key: string]: number;
-    };
-    demographics?: {
-      age?: number;
-      gender?: string;
-    };
-    emotion?: {
-      [key: string]: number;
-    };
-    beauty?: {
-      male_score?: number;
-      female_score?: number;
-    };
-  }; // For advanced analysis
-  // Add confidence scores
-  skinConfidence?: {
-    health?: number;
-    stain?: number;
-    acne?: number;
-    dark_circle?: number;
-    wrinkle?: number;
-  };
-  emotionConfidence?: {
-    [key: string]: number;
-  };
-}
+import AdvancedAnalysisResultsFixed from "@/components/AdvancedAnalysisResultsFixed";
+import { SkinAnalysisData } from "@/types/analysis";
+import { 
+  loadAnalysisResults, 
+  getAnalysisType, 
+  clearAnalysisData, 
+  detectAnalysisType 
+} from "@/utils/sessionStorage";
 
 /**
  * Results Page Component
@@ -155,44 +23,31 @@ interface SkinAnalyzeResult {
  * on the data structure.
  */
 export default function ResultsPage() {
-  const [analysisData, setAnalysisData] = useState<SkinAnalyzeResult | null>(null);
+  const [analysisData, setAnalysisData] = useState<SkinAnalysisData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [analysisType, setAnalysisType] = useState<'basic' | 'advanced'>('basic');
   const router = useRouter();
 
   useEffect(() => {
-    // Retrieve data from sessionStorage
-    const storedData = sessionStorage.getItem("skinAnalysisResults");
-    const storedType = sessionStorage.getItem("analysisType");
+    // Load data using utility functions
+    const data = loadAnalysisResults();
     
-    if (storedData) {
-      try {
-        const parsedData = JSON.parse(storedData);
-        setAnalysisData(parsedData);
-        
-        // Determine analysis type based on stored type or data structure
-        if (storedType) {
-          setAnalysisType(storedType as 'basic' | 'advanced');
-        } else {
-          // Auto-detect based on data structure
-          // Advanced analysis has skinAnalysis property or detailed skin analysis data
-          const isAdvanced = parsedData.skinAnalysis || 
-                           (parsedData.result && typeof parsedData.result === 'object' && 
-                            Object.keys(parsedData.result).length > 4) ||
-                           (parsedData.analysisResults?.skin && 
-                            Object.keys(parsedData.analysisResults.skin).length > 5);
-          setAnalysisType(isAdvanced ? 'advanced' : 'basic');
-        }
-      } catch (err: unknown) {
-        console.error("Error loading analysis data:", err);
-        setError("Gagal memuat data hasil analisis");
+    if (data) {
+      setAnalysisData(data);
+      
+      // Determine analysis type
+      const storedType = getAnalysisType();
+      if (storedType) {
+        setAnalysisType(storedType);
+      } else {
+        setAnalysisType(detectAnalysisType(data));
       }
     } else {
       setError("Tidak ada data hasil analisis. Silakan lakukan analisis terlebih dahulu.");
     }
   }, []);
 
-  // Add beforeunload event listener to warn users about data loss
+  // Combined cleanup and warning effects
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Cancel the event and show a warning message
@@ -201,27 +56,18 @@ export default function ResultsPage() {
       return e.returnValue;
     };
 
-    // Add event listener
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
-
-  // Add pagehide event listener to automatically clear session storage
-  useEffect(() => {
     const handlePageHide = () => {
       // Clear session storage when page is hidden (tab closed, browser closed, etc.)
-      sessionStorage.removeItem("skinAnalysisResults");
+      clearAnalysisData();
     };
 
-    // Add event listener for pagehide (more reliable than beforeunload for cleanup)
+    // Add event listeners
+    window.addEventListener("beforeunload", handleBeforeUnload);
     window.addEventListener("pagehide", handlePageHide);
 
-    // Cleanup function to remove event listener
+    // Cleanup function to remove event listeners
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("pagehide", handlePageHide);
     };
   }, []);
@@ -233,8 +79,7 @@ export default function ResultsPage() {
     );
     
     if (confirmNew) {
-      sessionStorage.removeItem("skinAnalysisResults");
-      sessionStorage.removeItem("analysisType");
+      clearAnalysisData();
       router.push("/analysis");
     }
   };
@@ -279,8 +124,7 @@ export default function ResultsPage() {
     );
     
     if (confirmBack) {
-      sessionStorage.removeItem("skinAnalysisResults");
-      sessionStorage.removeItem("analysisType");
+      clearAnalysisData();
       router.push("/analysis");
     }
   };
@@ -339,7 +183,7 @@ export default function ResultsPage() {
 
         {/* Render komponen berdasarkan jenis analisis */}
         {analysisType === 'advanced' ? (
-          <AdvancedAnalysisResults analysisData={analysisData} />
+          <AdvancedAnalysisResultsFixed analysisData={analysisData} />
         ) : (
           <BasicAnalysisResults analysisData={analysisData} />
         )}

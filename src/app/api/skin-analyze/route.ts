@@ -31,11 +31,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type - Skin Analyze API supports JPEG and PNG
-    const allowedTypes = ['image/jpeg', 'image/png'];
+    // Validate file type - Skin Analyze API only supports JPEG according to documentation
+    const allowedTypes = ['image/jpeg'];
     if (!allowedTypes.includes(imageFile.type)) {
       return Response.json(
-        { error: 'Invalid file type. Only JPEG and PNG files are allowed.' },
+        { error: 'Invalid file type. Only JPEG files are allowed for skin analysis.' },
         { status: 400 }
       );
     }
@@ -198,6 +198,9 @@ export async function POST(request: NextRequest) {
     if (data.warning && data.warning.length > 0) {
       const qualityTips = [];
       for (const warning of data.warning) {
+        if (warning.includes('improper_headpose')) {
+          qualityTips.push('For better skin analysis results, please ensure your head is facing forward with minimal angle (roll ≤ ±45°, yaw ≤ ±45°, pitch ≤ ±45°).');
+        }
         if (warning.includes('INVALID_IMAGE_FACE')) {
           qualityTips.push('For better skin analysis results, please ensure your face is clearly visible and well-lit.');
         }
@@ -210,39 +213,44 @@ export async function POST(request: NextRequest) {
     }
 
     // Transform the response to include detailed skin analysis categories
+    // According to documentation, result is an object, not an array
+    const resultData = data.result;
+    
     const skinAnalysisResult = {
       ...data,
       // Organize skin analysis by categories for better frontend handling
-      // Note: data.result is an object, not an array, so we access properties directly
       skinAnalysis: {
         eyelids: {
-          left_eyelids: data.result?.left_eyelids,
-          right_eyelids: data.result?.right_eyelids
+          left_eyelids: resultData?.left_eyelids,
+          right_eyelids: resultData?.right_eyelids
         },
         eyeArea: {
-          eye_pouch: data.result?.eye_pouch,
-          dark_circle: data.result?.dark_circle
+          eye_pouch: resultData?.eye_pouch,
+          dark_circle: resultData?.dark_circle
         },
         wrinkles: {
-          forehead_wrinkle: data.result?.forehead_wrinkle,
-          crows_feet: data.result?.crows_feet,
-          eye_finelines: data.result?.eye_finelines,
-          glabella_wrinkle: data.result?.glabella_wrinkle,
-          nasolabial_fold: data.result?.nasolabial_fold
+          forehead_wrinkle: resultData?.forehead_wrinkle,
+          crows_feet: resultData?.crows_feet,
+          eye_finelines: resultData?.eye_finelines,
+          glabella_wrinkle: resultData?.glabella_wrinkle,
+          nasolabial_fold: resultData?.nasolabial_fold
         },
         pores: {
-          pores_forehead: data.result?.pores_forehead,
-          pores_left_cheek: data.result?.pores_left_cheek,
-          pores_right_cheek: data.result?.pores_right_cheek,
-          pores_jaw: data.result?.pores_jaw
+          pores_forehead: resultData?.pores_forehead,
+          pores_left_cheek: resultData?.pores_left_cheek,
+          pores_right_cheek: resultData?.pores_right_cheek,
+          pores_jaw: resultData?.pores_jaw
         },
         skinIssues: {
-          blackhead: data.result?.blackhead,
-          acne: data.result?.acne,
-          mole: data.result?.mole,
-          skin_spot: data.result?.skin_spot
+          blackhead: resultData?.blackhead,
+          acne: resultData?.acne,
+          mole: resultData?.mole,
+          skin_spot: resultData?.skin_spot
         },
-        skinType: data.result?.skin_type
+        skinType: {
+          skin_type: resultData?.skin_type,
+          details: resultData?.details || {}
+        }
       }
     };
 

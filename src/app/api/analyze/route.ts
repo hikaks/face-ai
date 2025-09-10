@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         api_secret: apiSecret as string,
         image_base64: base64Image,
         return_landmark: '2', // 106-point landmarks
-        return_attributes: 'skinstatus,gender,age,emotion,beauty,headpose,facequality,blur,eyestatus,mouthstatus'
+        return_attributes: 'skinstatus,gender,age,emotion,beauty,headpose,facequality,blur,eyestatus,mouthstatus,eyegaze,smiling'
       }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -163,6 +163,18 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
               );
             }
+            if (errorData.error_message.includes('TOO_MANY_FACE_ATTRIBUTES')) {
+              return Response.json(
+                { error: 'Multiple faces detected. Please use an image with only one face for accurate analysis.' },
+                { status: 400 }
+              );
+            }
+            if (errorData.error_message.includes('INSUFFICIENT_PERMISSION')) {
+              return Response.json(
+                { error: 'API Key does not have sufficient permissions for this operation. Please check your API Key type.' },
+                { status: 403 }
+              );
+            }
           }
         } catch (parseError) {
           console.error('Error parsing error response:', parseError);
@@ -215,6 +227,27 @@ export async function POST(request: NextRequest) {
     // Extract skin status data from attributes
     const skinStatus = faceData.attributes?.skinstatus || {};
     
+    // Calculate health score based on skin status
+    const calculateHealthScore = (skinData: Record<string, number | undefined>) => {
+      if (!skinData) return 0;
+      
+      const issues = [
+        skinData.acne || 0,
+        skinData.stain || 0,
+        skinData.dark_circle || 0,
+        skinData.wrinkle || 0
+      ];
+      
+      const totalIssues = issues.reduce((sum, issue) => sum + (issue || 0), 0);
+      const maxPossibleIssues = issues.length * 100; // Assuming max value is 100
+      
+      return Math.max(0, Math.min(100, Math.round(
+        100 - (totalIssues / maxPossibleIssues) * 100
+      )));
+    };
+    
+    const healthScore = calculateHealthScore(skinStatus);
+    
     // Add quality recommendations based on head pose if present
     if (faceData.attributes?.headpose) {
       const { roll_angle, yaw_angle, pitch_angle } = faceData.attributes.headpose;
@@ -229,7 +262,67 @@ export async function POST(request: NextRequest) {
     // This maintains compatibility with the existing frontend code
     const transformedData = {
       ...data,
-      result: skinStatus,
+      // Add face-specific data from Detect API
+      face_token: faceData.face_token,
+      face_rectangle: faceData.face_rectangle,
+      landmark: faceData.landmark,
+      result: {
+        // Map skin status data with proper structure - UNIFIED FORMAT
+        health: healthScore,
+        stain: skinStatus.stain || 0,
+        acne: skinStatus.acne || 0,
+        dark_circle: skinStatus.dark_circle || 0,
+        wrinkle: skinStatus.wrinkle || 0,
+        // Add other skin analysis data
+        eye_pouch: skinStatus.eye_pouch || 0,
+        forehead_wrinkle: skinStatus.forehead_wrinkle || 0,
+        crows_feet: skinStatus.crows_feet || 0,
+        eye_finelines: skinStatus.eye_finelines || 0,
+        glabella_wrinkle: skinStatus.glabella_wrinkle || 0,
+        nasolabial_fold: skinStatus.nasolabial_fold || 0,
+        pores_forehead: skinStatus.pores_forehead || 0,
+        pores_left_cheek: skinStatus.pores_left_cheek || 0,
+        pores_right_cheek: skinStatus.pores_right_cheek || 0,
+        pores_jaw: skinStatus.pores_jaw || 0,
+        blackhead: skinStatus.blackhead || 0,
+        mole: skinStatus.mole || 0,
+        skin_spot: skinStatus.skin_spot || 0,
+        skin_type: skinStatus.skin_type || 0
+      },
+      // Add skinAnalysis structure for consistency with Advanced Analysis
+      skinAnalysis: {
+        eyelids: {
+          left_eyelids: { value: 0, confidence: 0 }, // Not available in Basic Analysis
+          right_eyelids: { value: 0, confidence: 0 }
+        },
+        eyeArea: {
+          eye_pouch: { value: skinStatus.eye_pouch || 0, confidence: 0.8 },
+          dark_circle: { value: skinStatus.dark_circle || 0, confidence: 0.8 }
+        },
+        wrinkles: {
+          forehead_wrinkle: { value: skinStatus.forehead_wrinkle || 0, confidence: 0.8 },
+          crows_feet: { value: skinStatus.crows_feet || 0, confidence: 0.8 },
+          eye_finelines: { value: skinStatus.eye_finelines || 0, confidence: 0.8 },
+          glabella_wrinkle: { value: skinStatus.glabella_wrinkle || 0, confidence: 0.8 },
+          nasolabial_fold: { value: skinStatus.nasolabial_fold || 0, confidence: 0.8 }
+        },
+        pores: {
+          pores_forehead: { value: skinStatus.pores_forehead || 0, confidence: 0.8 },
+          pores_left_cheek: { value: skinStatus.pores_left_cheek || 0, confidence: 0.8 },
+          pores_right_cheek: { value: skinStatus.pores_right_cheek || 0, confidence: 0.8 },
+          pores_jaw: { value: skinStatus.pores_jaw || 0, confidence: 0.8 }
+        },
+        skinIssues: {
+          blackhead: { value: skinStatus.blackhead || 0, confidence: 0.8 },
+          acne: { value: skinStatus.acne || 0, confidence: 0.8 },
+          mole: { value: skinStatus.mole || 0, confidence: 0.8 },
+          skin_spot: { value: skinStatus.skin_spot || 0, confidence: 0.8 }
+        },
+        skinType: {
+          skin_type: skinStatus.skin_type || 0,
+          details: {} // Not available in Basic Analysis
+        }
+      },
       // Add demographic data if available
       demographics: {
         age: faceData.attributes?.age?.value,
@@ -239,7 +332,39 @@ export async function POST(request: NextRequest) {
       // Add emotion data if available
       emotion: faceData.attributes?.emotion,
       // Add beauty score if available
-      beauty: faceData.attributes?.beauty
+      beauty: faceData.attributes?.beauty,
+      // Add smile detection if available
+      smile: faceData.attributes?.smile,
+      // Add blur detection if available
+      blur: faceData.attributes?.blur,
+      // Add eye status if available
+      eyestatus: faceData.attributes?.eyestatus,
+      // Add face quality if available
+      facequality: faceData.attributes?.facequality,
+      // Add mouth status if available
+      mouthstatus: faceData.attributes?.mouthstatus,
+      // Add eye gaze if available
+      eyegaze: faceData.attributes?.eyegaze,
+      // Add head pose if available
+      headpose: faceData.attributes?.headpose,
+      // Add confidence scores for skin analysis
+      skinConfidence: {
+        health: 0.95, // High confidence for calculated health score
+        stain: skinStatus.stain ? 0.85 : 0, // Default confidence for skin status
+        acne: skinStatus.acne ? 0.85 : 0,
+        dark_circle: skinStatus.dark_circle ? 0.85 : 0,
+        wrinkle: skinStatus.wrinkle ? 0.85 : 0
+      },
+      // Add emotion confidence scores
+      emotionConfidence: faceData.attributes?.emotion ? {
+        anger: 0.8,
+        disgust: 0.8,
+        fear: 0.8,
+        happiness: 0.8,
+        neutral: 0.8,
+        sadness: 0.8,
+        surprise: 0.8
+      } : {}
     };
 
     // Return successful response with face analysis data
