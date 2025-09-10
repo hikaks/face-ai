@@ -110,7 +110,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             <span>{data?.emoji}</span>
             {label}
           </p>
-          <p className="text-sm text-gray-600 mb-1">{data?.description}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{data?.description}</p>
           <p className="text-primary font-bold">
             Skor: {Math.round(payload[0].value)}/100
           </p>
@@ -206,11 +206,11 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       {/* Header Section */}
-      <div className="text-center space-y-4 bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-xl border border-blue-100">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+      <div className="text-center space-y-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 p-8 rounded-xl border border-blue-100 dark:border-blue-800">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full mb-4">
           <span className="text-2xl">📊</span>
         </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
           Hasil Analisis Kulit Basic
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -314,12 +314,12 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
+          <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50 border-blue-200 dark:border-blue-800">
             <div className="flex items-center gap-2 mb-2">
-              <Heart className="h-4 w-4 text-blue-600" />
-              <h3 className="font-semibold">🫧 Kesehatan Kulit</h3>
+              <Heart className="h-4 w-4 text-blue-600 dark:text-blue-400 dark:text-blue-400" />
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">🫧 Kesehatan Kulit</h3>
             </div>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 dark:text-blue-400">
               {skinData?.health || 0}/100
             </div>
             {skinConfidence?.health && (
@@ -329,12 +329,12 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             )}
           </div>
           
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200">
+          <div className="p-4 border rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950/50 dark:to-amber-950/50 border-yellow-200 dark:border-yellow-800">
             <div className="flex items-center gap-2 mb-2">
-              <Droplets className="h-4 w-4 text-yellow-600" />
-              <h3 className="font-semibold">✨ Bebas Noda</h3>
+              <Droplets className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+              <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">✨ Bebas Noda</h3>
             </div>
-            <div className="text-2xl font-bold text-yellow-600">
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
               {100 - (skinData?.stain || 0)}/100
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -347,12 +347,12 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             )}
           </div>
           
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-red-50 to-rose-50 border-red-200">
+          <div className="p-4 border rounded-lg bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/50 dark:to-rose-950/50 border-red-200 dark:border-red-800">
             <div className="flex items-center gap-2 mb-2">
-              <Zap className="h-4 w-4 text-red-600" />
-              <h3 className="font-semibold">🌟 Bebas Jerawat</h3>
+              <Zap className="h-4 w-4 text-red-600 dark:text-red-400" />
+              <h3 className="font-semibold text-red-800 dark:text-red-200">🌟 Bebas Jerawat</h3>
             </div>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
               {100 - (skinData?.acne || 0)}/100
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -365,12 +365,12 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             )}
           </div>
           
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-violet-50 border-purple-200">
+          <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-950/50 dark:to-violet-950/50 border-purple-200 dark:border-purple-800">
             <div className="flex items-center gap-2 mb-2">
-              <Eye className="h-4 w-4 text-purple-600" />
-              <h3 className="font-semibold">👁️ Mata Cerah</h3>
+              <Eye className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <h3 className="font-semibold text-purple-800 dark:text-purple-200">👁️ Mata Cerah</h3>
             </div>
-            <div className="text-2xl font-bold text-purple-600">
+            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
               {100 - (skinData?.dark_circle || 0)}/100
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -383,12 +383,12 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             )}
           </div>
           
-          <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+          <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50 border-green-200 dark:border-green-800">
             <div className="flex items-center gap-2 mb-2">
-              <Waves className="h-4 w-4 text-green-600" />
-              <h3 className="font-semibold">⏰ Anti Aging</h3>
+              <Waves className="h-4 w-4 text-green-600 dark:text-green-400 dark:text-green-400" />
+              <h3 className="font-semibold text-green-800 dark:text-green-200">⏰ Anti Aging</h3>
             </div>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400 dark:text-green-400">
               {100 - (skinData?.wrinkle || 0)}/100
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -424,38 +424,38 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             skinData.glabella_wrinkle || skinData.nasolabial_fold) && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
-                <Waves className="h-5 w-5 text-green-600" />
+                <Waves className="h-5 w-5 text-green-600 dark:text-green-400" />
                 📏 Detail Kerutan
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {(skinData.forehead_wrinkle || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
                     <div className="text-sm font-medium text-green-800">Forehead Wrinkle</div>
-                    <div className="text-xl font-bold text-green-600">{skinData.forehead_wrinkle || 0}/100</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{skinData.forehead_wrinkle || 0}/100</div>
                   </div>
                 )}
                 {(skinData.crows_feet || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
                     <div className="text-sm font-medium text-green-800">Crows Feet</div>
-                    <div className="text-xl font-bold text-green-600">{skinData.crows_feet || 0}/100</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{skinData.crows_feet || 0}/100</div>
                   </div>
                 )}
                 {(skinData.eye_finelines || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
                     <div className="text-sm font-medium text-green-800">Eye Finelines</div>
-                    <div className="text-xl font-bold text-green-600">{skinData.eye_finelines || 0}/100</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{skinData.eye_finelines || 0}/100</div>
                   </div>
                 )}
                 {(skinData.glabella_wrinkle || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
                     <div className="text-sm font-medium text-green-800">Glabella Wrinkle</div>
-                    <div className="text-xl font-bold text-green-600">{skinData.glabella_wrinkle || 0}/100</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{skinData.glabella_wrinkle || 0}/100</div>
                   </div>
                 )}
                 {(skinData.nasolabial_fold || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
                     <div className="text-sm font-medium text-green-800">Nasolabial Fold</div>
-                    <div className="text-xl font-bold text-green-600">{skinData.nasolabial_fold || 0}/100</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{skinData.nasolabial_fold || 0}/100</div>
                   </div>
                 )}
               </div>
@@ -466,32 +466,32 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
           {(skinData.pores_forehead || skinData.pores_left_cheek || skinData.pores_right_cheek || skinData.pores_jaw) && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
-                <Droplets className="h-5 w-5 text-blue-600" />
+                <Droplets className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 🕳️ Detail Pori-pori
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {(skinData.pores_forehead || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
                     <div className="text-sm font-medium text-blue-800">Forehead</div>
-                    <div className="text-xl font-bold text-blue-600">{skinData.pores_forehead || 0}/100</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{skinData.pores_forehead || 0}/100</div>
                   </div>
                 )}
                 {(skinData.pores_left_cheek || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
                     <div className="text-sm font-medium text-blue-800">Left Cheek</div>
-                    <div className="text-xl font-bold text-blue-600">{skinData.pores_left_cheek || 0}/100</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{skinData.pores_left_cheek || 0}/100</div>
                   </div>
                 )}
                 {(skinData.pores_right_cheek || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
                     <div className="text-sm font-medium text-blue-800">Right Cheek</div>
-                    <div className="text-xl font-bold text-blue-600">{skinData.pores_right_cheek || 0}/100</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{skinData.pores_right_cheek || 0}/100</div>
                   </div>
                 )}
                 {(skinData.pores_jaw || 0) > 0 && (
                   <div className="p-3 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
                     <div className="text-sm font-medium text-blue-800">Jaw</div>
-                    <div className="text-xl font-bold text-blue-600">{skinData.pores_jaw || 0}/100</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{skinData.pores_jaw || 0}/100</div>
                   </div>
                 )}
               </div>
@@ -566,7 +566,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   <span className="text-2xl">🎂</span>
                   <h3 className="font-bold">Usia</h3>
                 </div>
-                <div className="text-xl font-semibold text-blue-600">
+                <div className="text-xl font-semibold text-blue-600 dark:text-blue-400">
                   {demographics?.age} tahun
                 </div>
               </div>
@@ -631,7 +631,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             {beauty?.male_score && (
               <div className="text-center p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
                 <h3 className="font-semibold mb-2">👨 Penilaian Pria</h3>
-                <div className="text-3xl font-bold text-blue-600">
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   {Math.round(beauty?.male_score || 0)}/100
                 </div>
               </div>
@@ -669,7 +669,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                 <div className={`p-6 border rounded-lg bg-gradient-to-r ${skinTypeInfo.color} ${skinTypeInfo.border} text-center`}>
                   <div className="text-4xl mb-3">{skinTypeInfo.emoji}</div>
                   <h3 className="text-xl font-bold mb-2">{skinTypeInfo.label}</h3>
-                  <div className="text-sm text-gray-600 mb-3">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                     Tipe: {skinTypeInfo.label}
                   </div>
                   <div className="text-xs text-gray-500">
@@ -706,7 +706,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   <span className="text-2xl">😊</span>
                   <h3 className="font-semibold">Smile Detection</h3>
                 </div>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   {Math.round(analysisData.smile.value || 0)}/100
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
@@ -726,7 +726,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   <span className="text-2xl">📷</span>
                   <h3 className="font-semibold">Image Quality</h3>
                 </div>
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                   {Math.round(analysisData.blur.blurness?.value || 0)}/100
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
@@ -822,7 +822,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                     {rec.priority === "high" ? "🔥 Prioritas Tinggi" : rec.priority === "medium" ? "⚡ Prioritas Sedang" : "✅ Prioritas Rendah"}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed">{rec.description}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{rec.description}</p>
               </div>
             );
           })}
@@ -845,46 +845,46 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Eye Status */}
             {analysisData.eyestatus.left_eye_status && (
-              <div className="p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50 border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-blue-800 dark:text-blue-200">
                   <span className="text-2xl">👁️</span>
                   Mata Kiri
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Terhalang:</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 dark:text-gray-300">Terhalang:</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-red-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.occlusion || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-red-600">
+                      <span className="text-sm font-bold text-red-600 dark:text-red-400">
                         {Math.round(analysisData.eyestatus.left_eye_status.occlusion || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Terbuka (Tanpa Kacamata):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Terbuka (Tanpa Kacamata):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-green-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.no_glass_eye_open || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-green-600">
+                      <span className="text-sm font-bold text-green-600 dark:text-green-400">
                         {Math.round(analysisData.eyestatus.left_eye_status.no_glass_eye_open || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Biasa (Tertutup):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Biasa (Tertutup):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-yellow-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.normal_glass_eye_close || 0)}%` }}
@@ -897,39 +897,39 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Biasa (Terbuka):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Biasa (Terbuka):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-blue-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.normal_glass_eye_open || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-blue-600">
+                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
                         {Math.round(analysisData.eyestatus.left_eye_status.normal_glass_eye_open || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Gelap:</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Gelap:</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-gray-600 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.dark_glasses || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-gray-600">
+                      <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
                         {Math.round(analysisData.eyestatus.left_eye_status.dark_glasses || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Tertutup (Tanpa Kacamata):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Tertutup (Tanpa Kacamata):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-purple-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.left_eye_status.no_glass_eye_close || 0)}%` }}
@@ -946,16 +946,16 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
 
             {/* Right Eye Status */}
             {analysisData.eyestatus.right_eye_status && (
-              <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50 border-green-200 dark:border-green-800">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-green-800 dark:text-green-200">
                   <span className="text-2xl">👁️</span>
                   Mata Kanan
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Terhalang:</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Terhalang:</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-red-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.occlusion || 0)}%` }}
@@ -968,24 +968,24 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Terbuka (Tanpa Kacamata):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Terbuka (Tanpa Kacamata):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-green-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.no_glass_eye_open || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-green-600">
+                      <span className="text-sm font-bold text-green-600 dark:text-green-400">
                         {Math.round(analysisData.eyestatus.right_eye_status.no_glass_eye_open || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Biasa (Tertutup):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Biasa (Tertutup):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-yellow-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.normal_glass_eye_close || 0)}%` }}
@@ -998,39 +998,39 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Biasa (Terbuka):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Biasa (Terbuka):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-blue-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.normal_glass_eye_open || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-blue-600">
+                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
                         {Math.round(analysisData.eyestatus.right_eye_status.normal_glass_eye_open || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Kacamata Gelap:</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Kacamata Gelap:</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-gray-600 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.dark_glasses || 0)}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm font-bold text-gray-600">
+                      <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
                         {Math.round(analysisData.eyestatus.right_eye_status.dark_glasses || 0)}%
                       </span>
                     </div>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Tertutup (Tanpa Kacamata):</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Tertutup (Tanpa Kacamata):</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
                           className="bg-purple-500 h-2 rounded-full" 
                           style={{ width: `${(analysisData.eyestatus.right_eye_status.no_glass_eye_close || 0)}%` }}
@@ -1063,22 +1063,22 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Surgical Mask or Respirator */}
-            <div className="p-6 border rounded-lg bg-gradient-to-r from-red-50 to-rose-50 border-red-200">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/50 dark:to-rose-950/50 border-red-200 dark:border-red-800">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-red-800 dark:text-red-200">
                 <span className="text-2xl">😷</span>
                 Masker Medis
               </h3>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">
+                <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
                   {Math.round(analysisData.mouthstatus.surgical_mask_or_respirator || 0)}%
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
                   <div 
                     className="bg-red-500 h-3 rounded-full" 
                     style={{ width: `${(analysisData.mouthstatus.surgical_mask_or_respirator || 0)}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">
                   {analysisData.mouthstatus.surgical_mask_or_respirator && analysisData.mouthstatus.surgical_mask_or_respirator > 50 
                     ? 'Terdeteksi masker medis' 
                     : 'Tidak terdeteksi masker medis'}
@@ -1087,22 +1087,22 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             </div>
 
             {/* Other Occlusion */}
-            <div className="p-6 border rounded-lg bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/50 dark:to-amber-950/50 border-orange-200 dark:border-orange-800">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-orange-800 dark:text-orange-200">
                 <span className="text-2xl">🚫</span>
                 Terhalang Lain
               </h3>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 mb-2">
+                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">
                   {Math.round(analysisData.mouthstatus.other_occlusion || 0)}%
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
                   <div 
                     className="bg-orange-500 h-3 rounded-full" 
                     style={{ width: `${(analysisData.mouthstatus.other_occlusion || 0)}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {analysisData.mouthstatus.other_occlusion && analysisData.mouthstatus.other_occlusion > 50 
                     ? 'Mulut terhalang objek lain' 
                     : 'Mulut tidak terhalang'}
@@ -1111,22 +1111,22 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             </div>
 
             {/* Close */}
-            <div className="p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50 border-blue-200 dark:border-blue-800">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-blue-800 dark:text-blue-200">
                 <span className="text-2xl">😐</span>
                 Tertutup
               </h3>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                   {Math.round(analysisData.mouthstatus.close || 0)}%
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
                   <div 
                     className="bg-blue-500 h-3 rounded-full" 
                     style={{ width: `${(analysisData.mouthstatus.close || 0)}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {analysisData.mouthstatus.close && analysisData.mouthstatus.close > 50 
                     ? 'Mulut dalam kondisi tertutup' 
                     : 'Mulut tidak tertutup'}
@@ -1135,22 +1135,22 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
             </div>
 
             {/* Open */}
-            <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50 border-green-200 dark:border-green-800">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-green-800 dark:text-green-200">
                 <span className="text-2xl">😮</span>
                 Terbuka
               </h3>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-2">
+                <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
                   {Math.round(analysisData.mouthstatus.open || 0)}%
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
                   <div 
                     className="bg-green-500 h-3 rounded-full" 
                     style={{ width: `${(analysisData.mouthstatus.open || 0)}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {analysisData.mouthstatus.open && analysisData.mouthstatus.open > 50 
                     ? 'Mulut dalam kondisi terbuka' 
                     : 'Mulut tidak terbuka'}
@@ -1160,8 +1160,8 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
           </div>
 
           {/* Summary */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-semibold text-gray-800 mb-2">📊 Ringkasan Status Mulut:</h4>
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">📊 Ringkasan Status Mulut:</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div className="flex justify-between">
                 <span>Total Confidence:</span>
@@ -1227,7 +1227,7 @@ export default function BasicAnalysisResults({ analysisData }: BasicAnalysisResu
                     {rec.priority === "high" ? "🔥 Prioritas Tinggi" : rec.priority === "medium" ? "⚡ Prioritas Sedang" : "✅ Prioritas Rendah"}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed">{rec.description}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{rec.description}</p>
               </div>
             );
           })}
